@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shree Ganesh Engineering Works</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -20,7 +20,6 @@
             }
         }
     </script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .stone-bg {
@@ -35,6 +34,12 @@
     </style>
 </head>
 <body class="h-full stone-bg text-gray-100 font-sans antialiased flex flex-col justify-between selection:bg-goldAccent selection:text-black">
+
+    <!-- LOADING OVERLAY -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/80 z-50 flex flex-col items-center justify-center">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-goldAccent mb-3"></i>
+        <p class="text-xs text-gray-300 uppercase tracking-widest">Connecting to Factory Cloud...</p>
+    </div>
 
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="flex-grow flex items-center justify-center p-4">
@@ -51,7 +56,7 @@
 
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Login Via Registered Email or Contact</label>
+                    <label class="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Registered Email or Contact</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
                             <i class="fa-solid fa-user-shield"></i>
@@ -79,16 +84,17 @@
                 </button>
             </form>
 
-            <div class="mt-6 pt-6 border-t border-gray-800 text-center text-xs text-gray-400">
-                <p>Demo Admin: <span class="text-goldAccent font-mono">admin@shreeganesh.com</span> / <span class="text-goldAccent font-mono">admin123</span></p>
-                <p class="mt-1">Demo Worker: <span class="text-goldAccent font-mono">9876543210</span> / <span class="text-goldAccent font-mono">worker123</span></p>
+            <div class="mt-6 pt-6 border-t border-gray-800 text-center text-[11px] text-gray-400 space-y-1">
+                <p>Admin 1: <span class="text-goldAccent font-mono">admin@shreeganesh.com</span> / <span class="text-goldAccent font-mono">admin123</span></p>
+                <p>Admin 2: <span class="text-goldAccent font-mono">manager@shreeganesh.com</span> / <span class="text-goldAccent font-mono">manager123</span></p>
+                <p>Admin 3: <span class="text-goldAccent font-mono">supervisor@shreeganesh.com</span> / <span class="text-goldAccent font-mono">supervisor123</span></p>
+                <p>Worker: <span class="text-goldAccent font-mono">9876543210</span> / <span class="text-goldAccent font-mono">worker123</span></p>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP DASHBOARD (Hidden initially) -->
+    <!-- MAIN APP DASHBOARD -->
     <div id="app-container" class="hidden flex-grow flex flex-col h-full">
-        <!-- Top Nav -->
         <header class="bg-stoneCard border-b border-gray-800 sticky top-0 z-30 px-4 lg:px-8 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-goldAccent">
@@ -96,7 +102,10 @@
                 </div>
                 <div>
                     <h2 class="text-sm font-bold gold-text tracking-wide leading-tight">Shree Ganesh Engineering</h2>
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest" id="user-role-badge">Portal</p>
+                    <p class="text-[10px] text-emerald-400 uppercase tracking-widest flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="user-role-badge">Cloud Synced</span>
+                    </p>
                 </div>
             </div>
 
@@ -109,17 +118,12 @@
             </div>
         </header>
 
-        <!-- Navigation Tabs -->
-        <div class="bg-black/40 border-b border-gray-800 px-4 lg:px-8 flex space-x-4 overflow-x-auto" id="nav-tabs-bar">
-            <!-- Dynamically populated based on role -->
-        </div>
+        <div class="bg-black/40 border-b border-gray-800 px-4 lg:px-8 flex space-x-4 overflow-x-auto" id="nav-tabs-bar"></div>
 
-        <!-- Content Body -->
         <main class="flex-grow p-4 lg:p-8 max-w-7xl w-full mx-auto overflow-y-auto">
             
             <!-- WORKER DASHBOARD VIEW -->
             <div id="view-worker" class="hidden space-y-6">
-                <!-- KPI Cards -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-stoneCard border border-gray-800 rounded-2xl p-4 relative overflow-hidden">
                         <div class="text-xs text-gray-400 font-medium">Total Hours Worked</div>
@@ -143,9 +147,7 @@
                     </div>
                 </div>
 
-                <!-- Log Work Form & Tasks -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Form -->
                     <div class="bg-stoneCard border border-gray-800 rounded-2xl p-6">
                         <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center space-x-2">
                             <i class="fa-solid fa-business-time text-goldAccent"></i>
@@ -170,7 +172,6 @@
                         </form>
                     </div>
 
-                    <!-- History Table -->
                     <div class="lg:col-span-2 bg-stoneCard border border-gray-800 rounded-2xl p-6 flex flex-col">
                         <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center space-x-2">
                             <i class="fa-solid fa-history text-goldAccent"></i>
@@ -187,9 +188,7 @@
                                         <th class="p-3">Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="worker-logs-table" class="divide-y divide-gray-800/50">
-                                    <!-- Populated by JS -->
-                                </tbody>
+                                <tbody id="worker-logs-table" class="divide-y divide-gray-800/50"></tbody>
                             </table>
                         </div>
                     </div>
@@ -201,7 +200,7 @@
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <h3 class="text-lg font-bold text-white">Factory Management Console</h3>
-                        <p class="text-xs text-gray-400">Monitor workforce hours, settle payments, and upgrade tasks.</p>
+                        <p class="text-xs text-gray-400">Live cloud ledger across all 3 admins and workers.</p>
                     </div>
                     <div class="flex items-center space-x-3">
                         <button onclick="openModal('worker-modal')" class="px-4 py-2 bg-goldAccent hover:bg-goldHover text-black font-semibold rounded-xl text-xs uppercase tracking-wider transition flex items-center space-x-2">
@@ -215,17 +214,14 @@
                     </div>
                 </div>
 
-                <!-- Admin Payments & Task Table -->
                 <div class="bg-stoneCard border border-gray-800 rounded-2xl p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h4 class="text-sm font-bold text-white uppercase tracking-wider">Worker Logs, Payments & Tasks</h4>
-                        <div class="flex items-center space-x-2">
-                            <select id="admin-filter-status" onchange="renderAdminDashboard()" class="bg-black/40 border border-gray-700 text-xs text-gray-300 rounded-lg px-3 py-1.5 focus:outline-none">
-                                <option value="ALL">All Statuses</option>
-                                <option value="Pending">Pending Payout</option>
-                                <option value="Paid">Paid</option>
-                            </select>
-                        </div>
+                        <select id="admin-filter-status" onchange="renderAdminDashboard()" class="bg-black/40 border border-gray-700 text-xs text-gray-300 rounded-lg px-3 py-1.5 focus:outline-none">
+                            <option value="ALL">All Statuses</option>
+                            <option value="Pending">Pending Payout</option>
+                            <option value="Paid">Paid</option>
+                        </select>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
@@ -240,9 +236,7 @@
                                     <th class="p-3 text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-logs-table" class="divide-y divide-gray-800/50">
-                                <!-- Populated by JS -->
-                            </tbody>
+                            <tbody id="admin-logs-table" class="divide-y divide-gray-800/50"></tbody>
                         </table>
                     </div>
                 </div>
@@ -256,7 +250,7 @@
                             <i class="fa-solid fa-vault text-goldAccent"></i>
                             <span>Admin Private Vault (Photos & Notes)</span>
                         </h3>
-                        <p class="text-xs text-gray-400">Securely store confidential factory blueprints, slips, and notes.</p>
+                        <p class="text-xs text-gray-400">Shared confidential records synced across all 3 admins.</p>
                     </div>
                     <button onclick="openModal('vault-modal')" class="px-4 py-2 bg-goldAccent hover:bg-goldHover text-black font-semibold rounded-xl text-xs uppercase tracking-wider transition flex items-center space-x-2">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -264,16 +258,13 @@
                     </button>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="vault-grid">
-                    <!-- Populated by JS -->
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="vault-grid"></div>
             </div>
 
         </main>
     </div>
 
     <!-- MODALS -->
-    <!-- Add Worker Modal -->
     <div id="worker-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-stoneCard border border-gray-800 rounded-2xl max-w-md w-full p-6">
             <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Register New Worker</h3>
@@ -306,16 +297,13 @@
         </div>
     </div>
 
-    <!-- Assign Task Modal -->
     <div id="task-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-stoneCard border border-gray-800 rounded-2xl max-w-md w-full p-6">
             <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Assign New Task</h3>
             <form onsubmit="handleAssignTask(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1">Select Worker</label>
-                    <select id="task-w-id" required class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
-                        <!-- Populated by JS -->
-                    </select>
+                    <select id="task-w-id" required class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white"></select>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1">Task Title / Details</label>
@@ -333,7 +321,6 @@
         </div>
     </div>
 
-    <!-- Add Vault Item Modal -->
     <div id="vault-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-stoneCard border border-gray-800 rounded-2xl max-w-md w-full p-6">
             <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Add Private Vault Record</h3>
@@ -347,7 +334,7 @@
                     <textarea id="vault-note" rows="3" placeholder="Vendor specifications and measurements..." class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white"></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">Upload Photo / Document</label>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Upload Photo / Document (Optional)</label>
                     <input type="file" id="vault-file" accept="image/*" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-xs text-gray-300">
                 </div>
                 <div class="flex justify-end space-x-3 pt-2">
@@ -358,119 +345,152 @@
         </div>
     </div>
 
-    <!-- JS Logic -->
-    <script>
-        // Initial Mock Database
-   let db = JSON.parse(localStorage.getItem('shree_ganesh_db')) || {
-            users: [
-                { id: 'u1', name: 'Admin Boss', phone: '9999999999', email: 'admin@shreeganesh.com', pass: 'admin123', role: 'admin' },
-                { id: 'u_admin2', name: 'Manager Sharma', phone: '9888888888', email: 'manager@shreeganesh.com', pass: 'manager123', role: 'admin' },
-                { id: 'u_admin3', name: 'Supervisor Verma', phone: '9777777777', email: 'supervisor@shreeganesh.com', pass: 'supervisor123', role: 'admin' },
-                { id: 'u2', name: 'Rajesh Kumar', phone: '9876543210', email: 'rajesh@factory.com', pass: 'worker123', role: 'worker', rate: 150 },
-                { id: 'u3', name: 'Sunita Devi', phone: '9123456789', email: 'sunita@factory.com', pass: 'worker123', role: 'worker', rate: 140 }
-            ],
-            logs: [
-                { id: 'l1', workerId: 'u2', workerName: 'Rajesh Kumar', date: '2026-06-01', task: 'Lathe machine calibration', hours: 8, earned: 1200, status: 'Pending', taskStage: 'Completed' },
-                { id: 'l2', workerId: 'u3', workerName: 'Sunita Devi', date: '2026-06-01', task: 'Quality inspection & packing', hours: 7, earned: 980, status: 'Paid', taskStage: 'Verified' }
-            ],
-            vault: []
-        
+    <!-- FIREBASE CLOUD DATABASE SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-analytics.js";
+        import { getFirestore, collection, doc, setDoc, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+        // Your exact Firebase configuration keys
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgauAHk-FqJyUq7wBoahSvNjjSl54Z4Zg",
+            authDomain: "shree-ganesh-works.firebaseapp.com",
+            projectId: "shree-ganesh-works",
+            storageBucket: "shree-ganesh-works.firebasestorage.app",
+            messagingSenderId: "353387567047",
+            appId: "1:353387567047:web:552203ddbe328213816be2",
+            measurementId: "G-HH14F8J625"
         };
 
-        let currentUser = JSON.parse(localStorage.getItem('shree_ganesh_current_user')) || null;
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
 
-        function saveDB() {
-            localStorage.setItem('shree_ganesh_db', JSON.stringify(db));
+        let allUsers = [];
+        let allLogs = [];
+        let allVault = [];
+        let currentUser = JSON.parse(localStorage.getItem('sgew_user')) || null;
+
+        // Seed initial 3 Admins + Demo Worker if database is empty
+        async function seedInitialUsers() {
+            const snap = await getDocs(collection(db, "users"));
+            if (snap.empty) {
+                const defaults = [
+                    { id: 'u1', name: 'Admin Boss', phone: '9999999999', email: 'admin@shreeganesh.com', pass: 'admin123', role: 'admin' },
+                    { id: 'u_admin2', name: 'Manager Sharma', phone: '9888888888', email: 'manager@shreeganesh.com', pass: 'manager123', role: 'admin' },
+                    { id: 'u_admin3', name: 'Supervisor Verma', phone: '9777777777', email: 'supervisor@shreeganesh.com', pass: 'supervisor123', role: 'admin' },
+                    { id: 'u2', name: 'Rajesh Kumar', phone: '9876543210', email: 'rajesh@factory.com', pass: 'worker123', role: 'worker', rate: 150 }
+                ];
+                for (const u of defaults) {
+                    await setDoc(doc(db, "users", u.id), u);
+                }
+            }
+        }
+
+        // Real-time listeners for live updates across all phones
+        async function initApp() {
+            try {
+                await seedInitialUsers();
+
+                onSnapshot(collection(db, "users"), (snap) => {
+                    allUsers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    if (currentUser && currentUser.role === 'admin') renderAdminDashboard();
+                });
+
+                onSnapshot(collection(db, "logs"), (snap) => {
+                    allLogs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    if (currentUser) {
+                        currentUser.role === 'worker' ? renderWorkerDashboard() : renderAdminDashboard();
+                    }
+                });
+
+                onSnapshot(collection(db, "vault"), (snap) => {
+                    allVault = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    if (currentUser && currentUser.role === 'admin') renderVault();
+                });
+
+                document.getElementById('loading-overlay').classList.add('hidden');
+                if (currentUser) showApp();
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading-overlay').innerHTML = `
+                    <div class="text-center p-6 max-w-md bg-stoneCard border border-red-500/40 rounded-2xl">
+                        <p class="text-red-400 font-bold mb-2">Firestore Database Needed</p>
+                        <p class="text-xs text-gray-300">Please enable Firestore Database in test mode inside your Firebase Console.</p>
+                    </div>`;
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            if (currentUser) {
-                showApp();
-            }
             const today = new Date().toISOString().split('T')[0];
             if(document.getElementById('work-date')) document.getElementById('work-date').value = today;
             if(document.getElementById('task-date')) document.getElementById('task-date').value = today;
+            initApp();
         });
 
-        function handleLogin(e) {
+        window.handleLogin = function(e) {
             e.preventDefault();
             const identity = document.getElementById('login-identity').value.trim();
             const pass = document.getElementById('login-password').value;
             const errEl = document.getElementById('login-error');
 
-            const found = db.users.find(u => (u.email === identity || u.phone === identity) && u.pass === pass);
+            const found = allUsers.find(u => (u.email === identity || u.phone === identity) && u.pass === pass);
             if (found) {
                 currentUser = found;
-                localStorage.setItem('shree_ganesh_current_user', JSON.stringify(currentUser));
+                localStorage.setItem('sgew_user', JSON.stringify(currentUser));
                 errEl.classList.add('hidden');
                 showApp();
             } else {
-                errEl.textContent = 'Invalid email/contact or password. Please check your credentials.';
+                errEl.textContent = 'Invalid email/contact or password.';
                 errEl.classList.remove('hidden');
             }
-        }
+        };
 
-        function handleLogout() {
+        window.handleLogout = function() {
             currentUser = null;
-            localStorage.removeItem('shree_ganesh_current_user');
+            localStorage.removeItem('sgew_user');
             document.getElementById('app-container').classList.add('hidden');
             document.getElementById('login-screen').classList.remove('hidden');
             document.getElementById('login-form').reset();
-        }
+        };
 
         function showApp() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('logged-user-name').textContent = currentUser.name;
-            document.getElementById('user-role-badge').textContent = currentUser.role === 'admin' ? 'Administrator' : 'Factory Worker';
+            document.getElementById('user-role-badge').textContent = currentUser.role === 'admin' ? 'Admin • Live Sync' : 'Worker • Live Sync';
 
             const tabsBar = document.getElementById('nav-tabs-bar');
-            tabsBar.innerHTML = '';
-
             if (currentUser.role === 'worker') {
-                tabsBar.innerHTML = `
-                    <button onclick="switchTab('worker')" id="tab-btn-worker" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition">My Work & Earnings</button>
-                `;
+                tabsBar.innerHTML = `<button onclick="switchTab('worker')" id="tab-btn-worker" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent">My Work & Earnings</button>`;
                 switchTab('worker');
             } else {
                 tabsBar.innerHTML = `
-                    <button onclick="switchTab('admin')" id="tab-btn-admin" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition">Worker & Payment Ledger</button>
-                    <button onclick="switchTab('vault')" id="tab-btn-vault" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white transition">Admin Vault</button>
+                    <button onclick="switchTab('admin')" id="tab-btn-admin" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent">Worker & Payment Ledger</button>
+                    <button onclick="switchTab('vault')" id="tab-btn-vault" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white">Admin Vault</button>
                 `;
                 switchTab('admin');
             }
         }
 
-        function switchTab(tabName) {
-            document.getElementById('view-worker').classList.add('hidden');
-            document.getElementById('view-admin').classList.add('hidden');
-            document.getElementById('view-vault').classList.add('hidden');
-
-            ['admin', 'vault', 'worker'].forEach(t => {
-                const btn = document.getElementById(`tab-btn-${t}`);
-                if (btn) {
-                    btn.className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white transition border-b-2 border-transparent";
-                }
+        window.switchTab = function(tabName) {
+            ['worker', 'admin', 'vault'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-btn-${v}`);
+                if (btn) btn.className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white border-b-2 border-transparent";
             });
 
-            if (tabName === 'worker') {
-                document.getElementById('view-worker').classList.remove('hidden');
-                document.getElementById('tab-btn-worker').className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition";
-                renderWorkerDashboard();
-            } else if (tabName === 'admin') {
-                document.getElementById('view-admin').classList.remove('hidden');
-                document.getElementById('tab-btn-admin').className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition";
-                renderAdminDashboard();
-            } else if (tabName === 'vault') {
-                document.getElementById('view-vault').classList.remove('hidden');
-                document.getElementById('tab-btn-vault').className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition";
-                renderVault();
-            }
-        }
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            if (activeBtn) activeBtn.className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent";
 
-        // WORKER DASHBOARD LOGIC
-        function renderWorkerDashboard() {
-            const myLogs = db.logs.filter(l => l.workerId === currentUser.id);
+            if (tabName === 'worker') renderWorkerDashboard();
+            if (tabName === 'admin') renderAdminDashboard();
+            if (tabName === 'vault') renderVault();
+        };
+
+        window.renderWorkerDashboard = function() {
+            const myLogs = allLogs.filter(l => l.workerId === currentUser.id);
             let totalHours = 0, totalEarned = 0, totalPaid = 0, totalPending = 0;
 
             myLogs.forEach(l => {
@@ -486,7 +506,7 @@
             document.getElementById('w-total-pending').textContent = '₹' + totalPending;
 
             const tbody = document.getElementById('worker-logs-table');
-          tbody.innerHTML = myLogs.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-gray-500">No work logs submitted yet.</td></tr>` : '';
+            tbody.innerHTML = myLogs.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-gray-500">No work logs submitted yet.</td></tr>` : '';
             
             myLogs.slice().reverse().forEach(l => {
                 tbody.innerHTML += `
@@ -501,113 +521,95 @@
                     </tr>
                 `;
             });
-        }
+        };
 
-        function handleWorkerLog(e) {
+        window.handleWorkerLog = async function(e) {
             e.preventDefault();
             const date = document.getElementById('work-date').value;
             const task = document.getElementById('work-task').value;
             const hours = Number(document.getElementById('work-hours').value);
             const earned = hours * (currentUser.rate || 150);
 
-            const newLog = {
-                id: 'l_' + Date.now(),
+            await addDoc(collection(db, "logs"), {
                 workerId: currentUser.id,
                 workerName: currentUser.name,
-                date,
-                task,
-                hours,
-                earned,
+                date, task, hours, earned,
                 status: 'Pending',
-                taskStage: 'Pending'
-            };
+                taskStage: 'Pending',
+                createdAt: Date.now()
+            });
 
-            db.logs.push(newLog);
-            saveDB();
             e.target.reset();
             document.getElementById('work-date').value = new Date().toISOString().split('T')[0];
-            renderWorkerDashboard();
-        }
+        };
 
-        // ADMIN DASHBOARD LOGIC
-        function renderAdminDashboard() {
+        window.renderAdminDashboard = function() {
             const filter = document.getElementById('admin-filter-status').value;
             const tbody = document.getElementById('admin-logs-table');
             tbody.innerHTML = '';
 
-            const filteredLogs = db.logs.filter(l => filter === 'ALL' || l.status === filter);
-
+            const filteredLogs = allLogs.filter(l => filter === 'ALL' || l.status === filter);
             if (filteredLogs.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">No records found.</td></tr>`;
-                return;
+            } else {
+                filteredLogs.slice().reverse().forEach(l => {
+                    tbody.innerHTML += `
+                        <tr class="border-b border-gray-800/50 hover:bg-black/20">
+                            <td class="p-3 font-medium text-white">${l.workerName}</td>
+                            <td class="p-3">
+                                <div class="text-white font-medium">${l.task}</div>
+                                <div class="text-[10px] text-gray-400">${l.date}</div>
+                            </td>
+                            <td class="p-3 text-gray-300">${l.hours} hrs</td>
+                            <td class="p-3 text-goldAccent font-semibold">₹${l.earned}</td>
+                            <td class="p-3">
+                                <select onchange="updateTaskStage('${l.id}', this.value)" class="bg-black/40 border border-gray-700 text-xs text-gray-300 rounded-lg px-2 py-1">
+                                    <option value="Assigned" ${l.taskStage === 'Assigned' ? 'selected' : ''}>Assigned</option>
+                                    <option value="Pending" ${l.taskStage === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="In Progress" ${l.taskStage === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                    <option value="Completed" ${l.taskStage === 'Completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="Verified" ${l.taskStage === 'Verified' ? 'selected' : ''}>Verified</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <button onclick="togglePayment('${l.id}', '${l.status}')" class="px-2.5 py-1 rounded-full text-[10px] font-semibold transition ${l.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}">
+                                    ${l.status}
+                                </button>
+                            </td>
+                            <td class="p-3 text-right">
+                                <button onclick="deleteLog('${l.id}')" class="p-1.5 text-red-400 hover:text-red-300"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
             }
 
-            filteredLogs.slice().reverse().forEach(l => {
-                tbody.innerHTML += `
-                    <tr class="border-b border-gray-800/50 hover:bg-black/20">
-                        <td class="p-3 font-medium text-white">${l.workerName}</td>
-                        <td class="p-3">
-                            <div class="text-white font-medium">${l.task}</div>
-                            <div class="text-[10px] text-gray-400">${l.date}</div>
-                        </td>
-                        <td class="p-3 text-gray-300">${l.hours} hrs</td>
-                        <td class="p-3 text-goldAccent font-semibold">₹${l.earned}</td>
-                        <td class="p-3">
-                            <select onchange="updateTaskStage('${l.id}', this.value)" class="bg-black/40 border border-gray-700 text-xs text-gray-300 rounded-lg px-2 py-1">
-                                <option value="Pending" ${l.taskStage === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="In Progress" ${l.taskStage === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="Completed" ${l.taskStage === 'Completed' ? 'selected' : ''}>Completed</option>
-                                <option value="Verified" ${l.taskStage === 'Verified' ? 'selected' : ''}>Verified</option>
-                            </select>
-                        </td>
-                        <td class="p-3">
-                            <button onclick="togglePayment('${l.id}')" class="px-2.5 py-1 rounded-full text-[10px] font-semibold transition ${l.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20'}">
-                                ${l.status} (Click to Toggle)
-                            </button>
-                        </td>
-                        <td class="p-3 text-right">
-                            <button onclick="deleteLog('${l.id}')" class="p-1.5 text-red-400 hover:text-red-300 transition" title="Delete Entry">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            // Populate worker dropdown for task assignment
             const selectW = document.getElementById('task-w-id');
-            selectW.innerHTML = '';
-            db.users.filter(u => u.role === 'worker').forEach(w => {
-                selectW.innerHTML += `<option value="${w.id}">${w.name} (₹${w.rate}/hr)</option>`;
+            if (selectW) {
+                selectW.innerHTML = '';
+                allUsers.filter(u => u.role === 'worker').forEach(w => {
+                    selectW.innerHTML += `<option value="${w.id}">${w.name} (₹${w.rate}/hr)</option>`;
+                });
+            }
+        };
+
+        window.togglePayment = async function(id, currentStatus) {
+            await updateDoc(doc(db, "logs", id), {
+                status: currentStatus === 'Paid' ? 'Pending' : 'Paid'
             });
-        }
+        };
 
-        function togglePayment(id) {
-            const log = db.logs.find(l => l.id === id);
-            if (log) {
-                log.status = log.status === 'Paid' ? 'Pending' : 'Paid';
-                saveDB();
-                renderAdminDashboard();
+        window.updateTaskStage = async function(id, stage) {
+            await updateDoc(doc(db, "logs", id), { taskStage: stage });
+        };
+
+        window.deleteLog = async function(id) {
+            if (confirm('Delete this entry from cloud?')) {
+                await deleteDoc(doc(db, "logs", id));
             }
-        }
+        };
 
-        function updateTaskStage(id, stage) {
-            const log = db.logs.find(l => l.id === id);
-            if (log) {
-                log.taskStage = stage;
-                saveDB();
-            }
-        }
-
-        function deleteLog(id) {
-            if (confirm('Are you sure you want to delete this log entry?')) {
-                db.logs = db.logs.filter(l => l.id !== id);
-                saveDB();
-                renderAdminDashboard();
-            }
-        }
-
-        function handleAddWorker(e) {
+        window.handleAddWorker = async function(e) {
             e.preventDefault();
             const name = document.getElementById('new-w-name').value;
             const phone = document.getElementById('new-w-phone').value;
@@ -615,48 +617,50 @@
             const rate = Number(document.getElementById('new-w-rate').value);
             const pass = document.getElementById('new-w-pass').value;
 
-            db.users.push({
-                id: 'u_' + Date.now(),
-                name, phone, email, pass, role: 'worker', rate
-            });
-            saveDB();
+            await addDoc(collection(db, "users"), { name, phone, email, pass, role: 'worker', rate });
             closeModal('worker-modal');
             e.target.reset();
-            alert('Worker registered successfully!');
-        }
+        };
 
-        function handleAssignTask(e) {
+        window.handleAssignTask = async function(e) {
             e.preventDefault();
             const workerId = document.getElementById('task-w-id').value;
-            const worker = db.users.find(u => u.id === workerId);
-            const taskTitle = document.getElementById('task-title').value;
+            const worker = allUsers.find(u => u.id === workerId);
+            const task = document.getElementById('task-title').value;
             const date = document.getElementById('task-date').value;
 
-            db.logs.push({
-                id: 'l_' + Date.now(),
-                workerId,
-                workerName: worker.name,
-                date,
-                task: taskTitle,
-                hours: 0,
-                earned: 0,
-                status: 'Pending',
-                taskStage: 'Assigned'
+            await addDoc(collection(db, "logs"), {
+                workerId, workerName: worker.name, date, task,
+                hours: 0, earned: 0, status: 'Pending', taskStage: 'Assigned', createdAt: Date.now()
             });
-
-            saveDB();
             closeModal('task-modal');
             e.target.reset();
-            renderAdminDashboard();
-            alert('Task assigned successfully!');
+        };
+
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 800;
+                    const scale = Math.min(1, maxWidth / img.width);
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    callback(canvas.toDataURL('image/jpeg', 0.7));
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
-        // VAULT LOGIC
-        function renderVault() {
+        window.renderVault = function() {
             const grid = document.getElementById('vault-grid');
-            grid.innerHTML = db.vault.length === 0 ? `<div class="col-span-full py-8 text-center text-gray-500">Vault is empty. Add confidential notes or blueprints.</div>` : '';
+            grid.innerHTML = allVault.length === 0 ? `<div class="col-span-full py-8 text-center text-gray-500">Vault is empty. Add confidential notes or photos.</div>` : '';
 
-            db.vault.slice().reverse().forEach(v => {
+            allVault.slice().reverse().forEach(v => {
                 grid.innerHTML += `
                     <div class="bg-stoneCard border border-gray-800 rounded-2xl p-4 flex flex-col justify-between">
                         <div>
@@ -671,63 +675,46 @@
                     </div>
                 `;
             });
-        }
+        };
 
-        function handleAddVault(e) {
+        window.handleAddVault = function(e) {
             e.preventDefault();
             const title = document.getElementById('vault-title').value;
             const note = document.getElementById('vault-note').value;
             const fileInput = document.getElementById('vault-file');
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(uploadEvent) {
-                    db.vault.push({
-                        id: 'v_' + Date.now(),
-                        title,
-                        note,
-                        file: uploadEvent.target.result,
-                        date: new Date().toISOString().split('T')[0]
-                    });
-                    saveDB();
-                    closeModal('vault-modal');
-                    e.target.reset();
-                    renderVault();
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                db.vault.push({
-                    id: 'v_' + Date.now(),
-                    title,
-                    note,
-                    file: null,
-                    date: new Date().toISOString().split('T')[0]
+            const saveToCloud = async (imgData) => {
+                await addDoc(collection(db, "vault"), {
+                    title, note, file: imgData,
+                    date: new Date().toISOString().split('T')[0],
+                    createdAt: Date.now()
                 });
-                saveDB();
                 closeModal('vault-modal');
                 e.target.reset();
-                renderVault();
-            }
-        }
+            };
 
-        function deleteVault(id) {
+            if (fileInput.files && fileInput.files[0]) {
+                compressImage(fileInput.files[0], saveToCloud);
+            } else {
+                saveToCloud(null);
+            }
+        };
+
+        window.deleteVault = async function(id) {
             if (confirm('Delete this vault record?')) {
-                db.vault = db.vault.filter(v => v.id !== id);
-                saveDB();
-                renderVault();
+                await deleteDoc(doc(db, "vault", id));
             }
-        }
+        };
 
-        function openModal(id) {
+        window.openModal = function(id) {
             document.getElementById(id).classList.remove('hidden');
             document.getElementById(id).classList.add('flex');
-            if(id === 'task-modal') renderAdminDashboard();
-        }
+        };
 
-        function closeModal(id) {
+        window.closeModal = function(id) {
             document.getElementById(id).classList.remove('flex');
             document.getElementById(id).classList.add('hidden');
-        }
+        };
     </script>
 </body>
 </html>
