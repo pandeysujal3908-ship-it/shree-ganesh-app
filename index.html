@@ -361,9 +361,11 @@
     <!-- JS Logic -->
     <script>
         // Initial Mock Database
-        let db = JSON.parse(localStorage.getItem('shree_ganesh_db')) || {
+   let db = JSON.parse(localStorage.getItem('shree_ganesh_db')) || {
             users: [
                 { id: 'u1', name: 'Admin Boss', phone: '9999999999', email: 'admin@shreeganesh.com', pass: 'admin123', role: 'admin' },
+                { id: 'u_admin2', name: 'Manager Sharma', phone: '9888888888', email: 'manager@shreeganesh.com', pass: 'manager123', role: 'admin' },
+                { id: 'u_admin3', name: 'Supervisor Verma', phone: '9777777777', email: 'supervisor@shreeganesh.com', pass: 'supervisor123', role: 'admin' },
                 { id: 'u2', name: 'Rajesh Kumar', phone: '9876543210', email: 'rajesh@factory.com', pass: 'worker123', role: 'worker', rate: 150 },
                 { id: 'u3', name: 'Sunita Devi', phone: '9123456789', email: 'sunita@factory.com', pass: 'worker123', role: 'worker', rate: 140 }
             ],
@@ -372,6 +374,7 @@
                 { id: 'l2', workerId: 'u3', workerName: 'Sunita Devi', date: '2026-06-01', task: 'Quality inspection & packing', hours: 7, earned: 980, status: 'Paid', taskStage: 'Verified' }
             ],
             vault: []
+        
         };
 
         let currentUser = JSON.parse(localStorage.getItem('shree_ganesh_current_user')) || null;
