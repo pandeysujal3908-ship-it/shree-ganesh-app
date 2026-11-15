@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shree Ganesh Engineering Works</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        stoneDark: '#121212',
+                        stoneCard: '#1E1E1E',
+                        goldAccent: '#D4AF37',
+                        goldHover: '#C5A028'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .stone-bg {
+            background-color: #121212;
+            background-image: radial-gradient(circle at 50% 30%, #2a2a2a 0%, #121212 80%);
+        }
+        .gold-text {
+            background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="h-full stone-bg text-gray-100 font-sans antialiased flex flex-col justify-between selection:bg-goldAccent selection:text-black">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="flex-grow flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-stoneCard border border-amber-500/20 rounded-2xl shadow-2xl p-8 backdrop-blur-md relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-goldAccent/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-goldAccent mb-4 text-2xl shadow-inner">
+                    <i class="fa-solid fa-industry"></i>
+                </div>
+                <h1 class="text-2xl font-bold gold-text tracking-wide uppercase">Shree Ganesh Engineering</h1>
+                <p class="text-xs text-amber-500/80 tracking-widest uppercase mt-1">Precision Manufacturing & Engineering Solutions</p>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Login Via Registered Email or Contact</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </span>
+                        <input type="text" id="login-identity" required placeholder="e.g. 9876543210 or email@factory.com" 
+                            class="w-full pl-10 pr-4 py-3 bg-black/40 border border-gray-700 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-goldAccent focus:ring-1 focus:ring-goldAccent transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Secure Password / PIN</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" id="login-password" required placeholder="••••••••" 
+                            class="w-full pl-10 pr-4 py-3 bg-black/40 border border-gray-700 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-goldAccent focus:ring-1 focus:ring-goldAccent transition">
+                    </div>
+                </div>
+
+                <div id="login-error" class="hidden text-red-400 text-xs text-center bg-red-950/40 border border-red-800/50 py-2 rounded-lg"></div>
+
+                <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-black font-semibold rounded-xl text-sm shadow-lg shadow-amber-500/20 transition transform active:scale-95">
+                    Sign In to Portal
+                </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-gray-800 text-center text-xs text-gray-400">
+                <p>Demo Admin: <span class="text-goldAccent font-mono">admin@shreeganesh.com</span> / <span class="text-goldAccent font-mono">admin123</span></p>
+                <p class="mt-1">Demo Worker: <span class="text-goldAccent font-mono">9876543210</span> / <span class="text-goldAccent font-mono">worker123</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP DASHBOARD (Hidden initially) -->
+    <div id="app-container" class="hidden flex-grow flex flex-col h-full">
+        <!-- Top Nav -->
+        <header class="bg-stoneCard border-b border-gray-800 sticky top-0 z-30 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-goldAccent">
+                    <i class="fa-solid fa-industry"></i>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold gold-text tracking-wide leading-tight">Shree Ganesh Engineering</h2>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest" id="user-role-badge">Portal</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <span id="logged-user-name" class="text-xs text-gray-300 hidden sm:inline-block font-medium"></span>
+                <button onclick="handleLogout()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-lg text-xs font-medium transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-black/40 border-b border-gray-800 px-4 lg:px-8 flex space-x-4 overflow-x-auto" id="nav-tabs-bar">
+            <!-- Dynamically populated based on role -->
+        </div>
+
+        <!-- Content Body -->
+        <main class="flex-grow p-4 lg:p-8 max-w-7xl w-full mx-auto overflow-y-auto">
+            
+            <!-- WORKER DASHBOARD VIEW -->
+            <div id="view-worker" class="hidden space-y-6">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-stoneCard border border-gray-800 rounded-2xl p-4 relative overflow-hidden">
+                        <div class="text-xs text-gray-400 font-medium">Total Hours Worked</div>
+                        <div class="text-2xl font-bold text-white mt-1" id="w-total-hours">0 hrs</div>
+                        <i class="fa-solid fa-clock absolute right-4 bottom-4 text-2xl text-amber-500/10"></i>
+                    </div>
+                    <div class="bg-stoneCard border border-gray-800 rounded-2xl p-4 relative overflow-hidden">
+                        <div class="text-xs text-gray-400 font-medium">Total Earned</div>
+                        <div class="text-2xl font-bold text-goldAccent mt-1" id="w-total-earned">₹0</div>
+                        <i class="fa-solid fa-indian-rupee-sign absolute right-4 bottom-4 text-2xl text-amber-500/10"></i>
+                    </div>
+                    <div class="bg-stoneCard border border-gray-800 rounded-2xl p-4 relative overflow-hidden">
+                        <div class="text-xs text-gray-400 font-medium">Amount Paid</div>
+                        <div class="text-2xl font-bold text-emerald-400 mt-1" id="w-total-paid">₹0</div>
+                        <i class="fa-solid fa-circle-check absolute right-4 bottom-4 text-2xl text-emerald-500/10"></i>
+                    </div>
+                    <div class="bg-stoneCard border border-gray-800 rounded-2xl p-4 relative overflow-hidden">
+                        <div class="text-xs text-gray-400 font-medium">Pending Balance</div>
+                        <div class="text-2xl font-bold text-amber-400 mt-1" id="w-total-pending">₹0</div>
+                        <i class="fa-solid fa-hourglass-half absolute right-4 bottom-4 text-2xl text-amber-500/10"></i>
+                    </div>
+                </div>
+
+                <!-- Log Work Form & Tasks -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Form -->
+                    <div class="bg-stoneCard border border-gray-800 rounded-2xl p-6">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center space-x-2">
+                            <i class="fa-solid fa-business-time text-goldAccent"></i>
+                            <span>Log Daily Work & Hours</span>
+                        </h3>
+                        <form onsubmit="handleWorkerLog(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1">Date</label>
+                                <input type="date" id="work-date" required class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white focus:outline-none focus:border-goldAccent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1">Task / Description</label>
+                                <input type="text" id="work-task" required placeholder="e.g. Lathe machining part #402" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white focus:outline-none focus:border-goldAccent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1">Hours Worked</label>
+                                <input type="number" step="0.5" min="0.5" max="24" id="work-hours" required placeholder="8" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white focus:outline-none focus:border-goldAccent">
+                            </div>
+                            <button type="submit" class="w-full py-2.5 bg-goldAccent hover:bg-goldHover text-black font-semibold rounded-xl text-xs uppercase tracking-wider transition">
+                                Submit Work Log
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- History Table -->
+                    <div class="lg:col-span-2 bg-stoneCard border border-gray-800 rounded-2xl p-6 flex flex-col">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center space-x-2">
+                            <i class="fa-solid fa-history text-goldAccent"></i>
+                            <span>My Work History & Payment Status</span>
+                        </h3>
+                        <div class="overflow-x-auto flex-grow">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-black/30 text-gray-400 uppercase tracking-wider border-b border-gray-800">
+                                    <tr>
+                                        <th class="p-3">Date</th>
+                                        <th class="p-3">Task Description</th>
+                                        <th class="p-3">Hours</th>
+                                        <th class="p-3">Earned (₹)</th>
+                                        <th class="p-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="worker-logs-table" class="divide-y divide-gray-800/50">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN DASHBOARD VIEW -->
+            <div id="view-admin" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Factory Management Console</h3>
+                        <p class="text-xs text-gray-400">Monitor workforce hours, settle payments, and upgrade tasks.</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="openModal('worker-modal')" class="px-4 py-2 bg-goldAccent hover:bg-goldHover text-black font-semibold rounded-xl text-xs uppercase tracking-wider transition flex items-center space-x-2">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>Add Worker</span>
+                        </button>
+                        <button onclick="openModal('task-modal')" class="px-4 py-2 bg-stone-700 hover:bg-stone-600 text-white font-semibold rounded-xl text-xs uppercase tracking-wider transition flex items-center space-x-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Assign Task</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Admin Payments & Task Table -->
+                <div class="bg-stoneCard border border-gray-800 rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">Worker Logs, Payments & Tasks</h4>
+                        <div class="flex items-center space-x-2">
+                            <select id="admin-filter-status" onchange="renderAdminDashboard()" class="bg-black/40 border border-gray-700 text-xs text-gray-300 rounded-lg px-3 py-1.5 focus:outline-none">
+                                <option value="ALL">All Statuses</option>
+                                <option value="Pending">Pending Payout</option>
+                                <option value="Paid">Paid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-black/30 text-gray-400 uppercase tracking-wider border-b border-gray-800">
+                                <tr>
+                                    <th class="p-3">Worker</th>
+                                    <th class="p-3">Date & Task</th>
+                                    <th class="p-3">Hours</th>
+                                    <th class="p-3">Amount</th>
+                                    <th class="p-3">Task Stage</th>
+                                    <th class="p-3">Payment</th>
+                                    <th class="p-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-logs-table" class="divide-y divide-gray-800/50">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN PRIVATE VAULT VIEW -->
+            <div id="view-vault" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-vault text-goldAccent"></i>
+                            <span>Admin Private Vault (Photos & Notes)</span>
+                        </h3>
+                        <p class="text-xs text-gray-400">Securely store confidential factory blueprints, slips, and notes.</p>
+                    </div>
+                    <button onclick="openModal('vault-modal')" class="px-4 py-2 bg-goldAccent hover:bg-goldHover text-black font-semibold rounded-xl text-xs uppercase tracking-wider transition flex items-center space-x-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Add Vault Item</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="vault-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Add Worker Modal -->
+    <div id="worker-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-stoneCard border border-gray-800 rounded-2xl max-w-md w-full p-6">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Register New Worker</h3>
+            <form onsubmit="handleAddWorker(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Full Name</label>
+                    <input type="text" id="new-w-name" required placeholder="Ramesh Kumar" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Contact Number (Login ID)</label>
+                    <input type="text" id="new-w-phone" required placeholder="9876543210" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Email ID</label>
+                    <input type="email" id="new-w-email" required placeholder="ramesh@factory.com" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Hourly Wage Rate (₹)</label>
+                    <input type="number" id="new-w-rate" required placeholder="150" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Temporary Password</label>
+                    <input type="password" id="new-w-pass" required placeholder="worker123" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeModal('worker-modal')" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-goldAccent text-black font-semibold rounded-xl text-xs">Save Worker</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assign Task Modal -->
+    <div id="task-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-stoneCard border border-gray-800 rounded-2xl max-w-md w-full p-6">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Assign New Task</h3>
+            <form onsubmit="handleAssignTask(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Select Worker</label>
+                    <select id="task-w-id" required class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Task Title / Details</label>
+                    <input type="text" id="task-title" required placeholder="Machine casting gear assembly" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Target Date</label>
+                    <input type="date" id="task-date" required class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeModal('task-modal')" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-goldAccent text-black font-semibold rounded-xl text-xs">Assign Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Vault Item Modal -->
+    <div id="vault-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-stoneCard border border-gray-800 rounded-2xl max-w-md w-full p-6">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Add Private Vault Record</h3>
+            <form onsubmit="handleAddVault(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Title / Label</label>
+                    <input type="text" id="vault-title" required placeholder="Machine Blueprint #3" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Confidential Note</label>
+                    <textarea id="vault-note" rows="3" placeholder="Vendor specifications and measurements..." class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-sm text-white"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Upload Photo / Document</label>
+                    <input type="file" id="vault-file" accept="image/*" class="w-full px-3 py-2 bg-black/40 border border-gray-700 rounded-xl text-xs text-gray-300">
+                </div>
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeModal('vault-modal')" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-goldAccent text-black font-semibold rounded-xl text-xs">Save to Vault</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        // Initial Mock Database
+        let db = JSON.parse(localStorage.getItem('shree_ganesh_db')) || {
+            users: [
+                { id: 'u1', name: 'Admin Boss', phone: '9999999999', email: 'admin@shreeganesh.com', pass: 'admin123', role: 'admin' },
+                { id: 'u2', name: 'Rajesh Kumar', phone: '9876543210', email: 'rajesh@factory.com', pass: 'worker123', role: 'worker', rate: 150 },
+                { id: 'u3', name: 'Sunita Devi', phone: '9123456789', email: 'sunita@factory.com', pass: 'worker123', role: 'worker', rate: 140 }
+            ],
+            logs: [
+                { id: 'l1', workerId: 'u2', workerName: 'Rajesh Kumar', date: '2026-06-01', task: 'Lathe machine calibration', hours: 8, earned: 1200, status: 'Pending', taskStage: 'Completed' },
+                { id: 'l2', workerId: 'u3', workerName: 'Sunita Devi', date: '2026-06-01', task: 'Quality inspection & packing', hours: 7, earned: 980, status: 'Paid', taskStage: 'Verified' }
+            ],
+            vault: []
+        };
+
+        let currentUser = JSON.parse(localStorage.getItem('shree_ganesh_current_user')) || null;
+
+        function saveDB() {
+            localStorage.setItem('shree_ganesh_db', JSON.stringify(db));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (currentUser) {
+                showApp();
+            }
+            const today = new Date().toISOString().split('T')[0];
+            if(document.getElementById('work-date')) document.getElementById('work-date').value = today;
+            if(document.getElementById('task-date')) document.getElementById('task-date').value = today;
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const identity = document.getElementById('login-identity').value.trim();
+            const pass = document.getElementById('login-password').value;
+            const errEl = document.getElementById('login-error');
+
+            const found = db.users.find(u => (u.email === identity || u.phone === identity) && u.pass === pass);
+            if (found) {
+                currentUser = found;
+                localStorage.setItem('shree_ganesh_current_user', JSON.stringify(currentUser));
+                errEl.classList.add('hidden');
+                showApp();
+            } else {
+                errEl.textContent = 'Invalid email/contact or password. Please check your credentials.';
+                errEl.classList.remove('hidden');
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('shree_ganesh_current_user');
+            document.getElementById('app-container').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('login-form').reset();
+        }
+
+        function showApp() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('logged-user-name').textContent = currentUser.name;
+            document.getElementById('user-role-badge').textContent = currentUser.role === 'admin' ? 'Administrator' : 'Factory Worker';
+
+            const tabsBar = document.getElementById('nav-tabs-bar');
+            tabsBar.innerHTML = '';
+
+            if (currentUser.role === 'worker') {
+                tabsBar.innerHTML = `
+                    <button onclick="switchTab('worker')" id="tab-btn-worker" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition">My Work & Earnings</button>
+                `;
+                switchTab('worker');
+            } else {
+                tabsBar.innerHTML = `
+                    <button onclick="switchTab('admin')" id="tab-btn-admin" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition">Worker & Payment Ledger</button>
+                    <button onclick="switchTab('vault')" id="tab-btn-vault" class="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white transition">Admin Vault</button>
+                `;
+                switchTab('admin');
+            }
+        }
+
+        function switchTab(tabName) {
+            document.getElementById('view-worker').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-vault').classList.add('hidden');
+
+            ['admin', 'vault', 'worker'].forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (btn) {
+                    btn.className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white transition border-b-2 border-transparent";
+                }
+            });
+
+            if (tabName === 'worker') {
+                document.getElementById('view-worker').classList.remove('hidden');
+                document.getElementById('tab-btn-worker').className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition";
+                renderWorkerDashboard();
+            } else if (tabName === 'admin') {
+                document.getElementById('view-admin').classList.remove('hidden');
+                document.getElementById('tab-btn-admin').className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition";
+                renderAdminDashboard();
+            } else if (tabName === 'vault') {
+                document.getElementById('view-vault').classList.remove('hidden');
+                document.getElementById('tab-btn-vault').className = "py-3 px-4 text-xs font-semibold uppercase tracking-wider text-goldAccent border-b-2 border-goldAccent transition";
+                renderVault();
+            }
+        }
+
+        // WORKER DASHBOARD LOGIC
+        function renderWorkerDashboard() {
+            const myLogs = db.logs.filter(l => l.workerId === currentUser.id);
+            let totalHours = 0, totalEarned = 0, totalPaid = 0, totalPending = 0;
+
+            myLogs.forEach(l => {
+                totalHours += Number(l.hours);
+                totalEarned += Number(l.earned);
+                if (l.status === 'Paid') totalPaid += Number(l.earned);
+                else totalPending += Number(l.earned);
+            });
+
+            document.getElementById('w-total-hours').textContent = totalHours + ' hrs';
+            document.getElementById('w-total-earned').textContent = '₹' + totalEarned;
+            document.getElementById('w-total-paid').textContent = '₹' + totalPaid;
+            document.getElementById('w-total-pending').textContent = '₹' + totalPending;
+
+            const tbody = document.getElementById('worker-logs-table');
+            tbody.innerHTML = myLogs.length === ? `<tr><td colspan="5" class="p-4 text-center text-gray-500">No work logs submitted yet.</td></tr>` : '';
+            
+            myLogs.slice().reverse().forEach(l => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-800/50 hover:bg-black/20">
+                        <td class="p-3 text-gray-300">${l.date}</td>
+                        <td class="p-3 text-white font-medium">${l.task}</td>
+                        <td class="p-3 text-gray-300">${l.hours} hrs</td>
+                        <td class="p-3 text-goldAccent font-semibold">₹${l.earned}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${l.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}">${l.status}</span>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function handleWorkerLog(e) {
+            e.preventDefault();
+            const date = document.getElementById('work-date').value;
+            const task = document.getElementById('work-task').value;
+            const hours = Number(document.getElementById('work-hours').value);
+            const earned = hours * (currentUser.rate || 150);
+
+            const newLog = {
+                id: 'l_' + Date.now(),
+                workerId: currentUser.id,
+                workerName: currentUser.name,
+                date,
+                task,
+                hours,
+                earned,
+                status: 'Pending',
+                taskStage: 'Pending'
+            };
+
+            db.logs.push(newLog);
+            saveDB();
+            e.target.reset();
+            document.getElementById('work-date').value = new Date().toISOString().split('T')[0];
+            renderWorkerDashboard();
+        }
+
+        // ADMIN DASHBOARD LOGIC
+        function renderAdminDashboard() {
+            const filter = document.getElementById('admin-filter-status').value;
+            const tbody = document.getElementById('admin-logs-table');
+            tbody.innerHTML = '';
+
+            const filteredLogs = db.logs.filter(l => filter === 'ALL' || l.status === filter);
+
+            if (filteredLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">No records found.</td></tr>`;
+                return;
+            }
+
+            filteredLogs.slice().reverse().forEach(l => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-800/50 hover:bg-black/20">
+                        <td class="p-3 font-medium text-white">${l.workerName}</td>
+                        <td class="p-3">
+                            <div class="text-white font-medium">${l.task}</div>
+                            <div class="text-[10px] text-gray-400">${l.date}</div>
+                        </td>
+                        <td class="p-3 text-gray-300">${l.hours} hrs</td>
+                        <td class="p-3 text-goldAccent font-semibold">₹${l.earned}</td>
+                        <td class="p-3">
+                            <select onchange="updateTaskStage('${l.id}', this.value)" class="bg-black/40 border border-gray-700 text-xs text-gray-300 rounded-lg px-2 py-1">
+                                <option value="Pending" ${l.taskStage === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="In Progress" ${l.taskStage === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="Completed" ${l.taskStage === 'Completed' ? 'selected' : ''}>Completed</option>
+                                <option value="Verified" ${l.taskStage === 'Verified' ? 'selected' : ''}>Verified</option>
+                            </select>
+                        </td>
+                        <td class="p-3">
+                            <button onclick="togglePayment('${l.id}')" class="px-2.5 py-1 rounded-full text-[10px] font-semibold transition ${l.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20'}">
+                                ${l.status} (Click to Toggle)
+                            </button>
+                        </td>
+                        <td class="p-3 text-right">
+                            <button onclick="deleteLog('${l.id}')" class="p-1.5 text-red-400 hover:text-red-300 transition" title="Delete Entry">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Populate worker dropdown for task assignment
+            const selectW = document.getElementById('task-w-id');
+            selectW.innerHTML = '';
+            db.users.filter(u => u.role === 'worker').forEach(w => {
+                selectW.innerHTML += `<option value="${w.id}">${w.name} (₹${w.rate}/hr)</option>`;
+            });
+        }
+
+        function togglePayment(id) {
+            const log = db.logs.find(l => l.id === id);
+            if (log) {
+                log.status = log.status === 'Paid' ? 'Pending' : 'Paid';
+                saveDB();
+                renderAdminDashboard();
+            }
+        }
+
+        function updateTaskStage(id, stage) {
+            const log = db.logs.find(l => l.id === id);
+            if (log) {
+                log.taskStage = stage;
+                saveDB();
+            }
+        }
+
+        function deleteLog(id) {
+            if (confirm('Are you sure you want to delete this log entry?')) {
+                db.logs = db.logs.filter(l => l.id !== id);
+                saveDB();
+                renderAdminDashboard();
+            }
+        }
+
+        function handleAddWorker(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-w-name').value;
+            const phone = document.getElementById('new-w-phone').value;
+            const email = document.getElementById('new-w-email').value;
+            const rate = Number(document.getElementById('new-w-rate').value);
+            const pass = document.getElementById('new-w-pass').value;
+
+            db.users.push({
+                id: 'u_' + Date.now(),
+                name, phone, email, pass, role: 'worker', rate
+            });
+            saveDB();
+            closeModal('worker-modal');
+            e.target.reset();
+            alert('Worker registered successfully!');
+        }
+
+        function handleAssignTask(e) {
+            e.preventDefault();
+            const workerId = document.getElementById('task-w-id').value;
+            const worker = db.users.find(u => u.id === workerId);
+            const taskTitle = document.getElementById('task-title').value;
+            const date = document.getElementById('task-date').value;
+
+            db.logs.push({
+                id: 'l_' + Date.now(),
+                workerId,
+                workerName: worker.name,
+                date,
+                task: taskTitle,
+                hours: 0,
+                earned: 0,
+                status: 'Pending',
+                taskStage: 'Assigned'
+            });
+
+            saveDB();
+            closeModal('task-modal');
+            e.target.reset();
+            renderAdminDashboard();
+            alert('Task assigned successfully!');
+        }
+
+        // VAULT LOGIC
+        function renderVault() {
+            const grid = document.getElementById('vault-grid');
+            grid.innerHTML = db.vault.length === 0 ? `<div class="col-span-full py-8 text-center text-gray-500">Vault is empty. Add confidential notes or blueprints.</div>` : '';
+
+            db.vault.slice().reverse().forEach(v => {
+                grid.innerHTML += `
+                    <div class="bg-stoneCard border border-gray-800 rounded-2xl p-4 flex flex-col justify-between">
+                        <div>
+                            ${v.file ? `<img src="${v.file}" class="w-full h-40 object-cover rounded-xl mb-3 border border-gray-800">` : ''}
+                            <h4 class="text-sm font-bold text-white mb-1">${v.title}</h4>
+                            <p class="text-xs text-gray-300 leading-relaxed">${v.note || 'No notes added.'}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between text-[10px] text-gray-500">
+                            <span>Saved: ${v.date}</span>
+                            <button onclick="deleteVault('${v.id}')" class="text-red-400 hover:text-red-300">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function handleAddVault(e) {
+            e.preventDefault();
+            const title = document.getElementById('vault-title').value;
+            const note = document.getElementById('vault-note').value;
+            const fileInput = document.getElementById('vault-file');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    db.vault.push({
+                        id: 'v_' + Date.now(),
+                        title,
+                        note,
+                        file: uploadEvent.target.result,
+                        date: new Date().toISOString().split('T')[0]
+                    });
+                    saveDB();
+                    closeModal('vault-modal');
+                    e.target.reset();
+                    renderVault();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                db.vault.push({
+                    id: 'v_' + Date.now(),
+                    title,
+                    note,
+                    file: null,
+                    date: new Date().toISOString().split('T')[0]
+                });
+                saveDB();
+                closeModal('vault-modal');
+                e.target.reset();
+                renderVault();
+            }
+        }
+
+        function deleteVault(id) {
+            if (confirm('Delete this vault record?')) {
+                db.vault = db.vault.filter(v => v.id !== id);
+                saveDB();
+                renderVault();
+            }
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('flex');
+            if(id === 'task-modal') renderAdminDashboard();
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('flex');
+            document.getElementById(id).classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
