@@ -483,7 +483,7 @@
             document.getElementById('w-total-pending').textContent = '₹' + totalPending;
 
             const tbody = document.getElementById('worker-logs-table');
-            tbody.innerHTML = myLogs.length ===0 ? `<tr><td colspan="5" class="p-4 text-center text-gray-500">No work logs submitted yet.</td></tr>` : '';
+            tbody.innerHTML = myLogs.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-gray-500">No work logs submitted yet.</td></tr>` : '';
             
             myLogs.slice().reverse().forEach(l => {
                 tbody.innerHTML += `
